@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour {
 //			anim.SetTrigger("Jump");
 			
 			// Play a random jump audio clip.
-			AudioSource.PlayClipAtPoint(jumpClip, transform.position);
+			AudioSource.PlayClipAtPoint(jumpClip, transform.position, 0.4f);
 			
 			// Add a vertical force to the player.
 			rigidbody2D.AddForce(new Vector2(0f, jumpForce));

@@ -5,13 +5,16 @@ public class GameManager : MonoBehaviour {
 
 	public int iLevel;
 	public float fChangeLevelTime;
+	public float fParticleSystemTime;
 	public GameObject[] Levels;
 	public ObjectiveDiamond[] ObjectiveDiamonds;
+	public GameObject Celebrate;
 
 	private bool bChangingLevel;
-	private bool bFadingIn = true;
+	private bool bFadingIn = false;
 	private bool bFadingOut;
 	private float fLevelChangeCountdown;
+	private float fParticleSystemCountdown;
 	private GameObject goCurrentLevel;
 	private Object cloneLevel;
 
@@ -20,35 +23,47 @@ public class GameManager : MonoBehaviour {
 		goCurrentLevel = Levels[0];
 		cloneLevel = Instantiate(goCurrentLevel, new Vector3 (0,0,0), Quaternion.identity);
 		guiTexture.pixelInset = new Rect(0f, 0f, Screen.width, Screen.height);
-
+		StartScene();
 
 	}
-	
 	// Update is called once per frame
 	void Update () {
 		if(bFadingIn) {
 			StartScene();
+			Celebrate.SetActive(false);
 		}
 		if(bChangingLevel){
 			if(iLevel <= ObjectiveDiamonds.Length) {
 				ObjectiveDiamonds[iLevel].ActivateDiamond();
 			}
-
-			if(fLevelChangeCountdown > 0) {
-				EndScene();
-				fLevelChangeCountdown -= Time.deltaTime;
+			if(fParticleSystemCountdown > 0f) {
+				if(Celebrate.activeInHierarchy == false) {
+					Celebrate.SetActive(true);
+				}
+				fParticleSystemCountdown -=Time.deltaTime;
 			}
 
-			if(fLevelChangeCountdown <= 0) {
-				bFadingIn = true;
-				Destroy(cloneLevel);
-				iLevel++;
-				goCurrentLevel = Levels[iLevel];
-				cloneLevel = Instantiate(goCurrentLevel, new Vector3 (0,0,0), Quaternion.identity);
-				Debug.Log("Cloned Level");
-				fLevelChangeCountdown = fChangeLevelTime;
-				bChangingLevel = false;
+			if(fParticleSystemCountdown <= 0f) {
+				if(fLevelChangeCountdown > 0f) {
+					EndScene();
+					fLevelChangeCountdown -= Time.deltaTime;
+				}
+
+				if(fLevelChangeCountdown <= 0f) {
+					bFadingIn = true;
+					Destroy(cloneLevel);
+					iLevel++;
+					goCurrentLevel = Levels[iLevel];
+					cloneLevel = Instantiate(goCurrentLevel, new Vector3 (0,0,0), Quaternion.identity);
+					bChangingLevel = false;
+				}
 			}
+		}
+
+		if(Input.GetAxis("Cancel") != 0f) {
+			Debug.Log("Quitting");
+			Application.LoadLevel(0);
+
 		}
 	}
 
@@ -99,6 +114,7 @@ public class GameManager : MonoBehaviour {
 	}
 	public void ChangeLevel() {
 		fLevelChangeCountdown = fChangeLevelTime;
+		fParticleSystemCountdown = fParticleSystemTime;
 		bChangingLevel = true;
 	}
 }
