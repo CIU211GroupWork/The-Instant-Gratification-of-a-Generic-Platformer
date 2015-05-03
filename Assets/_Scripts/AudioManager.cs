@@ -8,17 +8,17 @@ public class AudioManager : MonoBehaviour {
 	public AudioSource HeartbeatSource;
 
 	public float fPickupVolume = 0.2f;
-	public float fMainMusicVolume = 1.0f;
-	public float fHeartbeatVolume = 0.0f;
+	public float fHeartbeatVolume = 0.1f;
 
+	private float lerpToVol;
+	private bool volLerp = false;
 	private int iClipTracker = 0;
 	private AudioClip acRandomClip;
 	private AudioClip acPrevRandomClip;
 
 	// Use this for initialization
 	void Start () {
-		BGMSource.volume = 1.0f;
-		HeartbeatSource.volume = 0.0f;
+		HeartbeatSource.volume = fHeartbeatVolume;
 
 		acRandomClip = new AudioClip();
 		acPrevRandomClip = new AudioClip();
@@ -26,7 +26,32 @@ public class AudioManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if(volLerp) {
+
+			fHeartbeatVolume += Time.deltaTime * 0.1f;
+
+			HeartbeatSource.volume = fHeartbeatVolume;
+
+			if(fHeartbeatVolume >= lerpToVol) {
+				fHeartbeatVolume = lerpToVol;
+				volLerp = false;
+			}
+//			float lerpParam = 0.0f;
+//			float speed = 0.3f;
+//
+//			if(lerpParam < 1) {
+//				lerpParam += Time.deltaTime;
+//				HeartbeatSource.volume = Mathf.Lerp(fHeartbeatVolume, lerpToVol, lerpParam);
+//				Debug.Log("Lerprun");
+//			}
+//
+//			if(Mathf.Approximately(HeartbeatSource.volume, lerpToVol)) {
+//				fHeartbeatVolume = lerpToVol;
+//				HeartbeatSource.volume = fHeartbeatVolume;
+//				volLerp = false;
+//				Debug.Log("Approx");
+//			}
+		}
 	}
 
 	public void PlayNextClip() {
@@ -39,13 +64,13 @@ public class AudioManager : MonoBehaviour {
 			iClipTracker++;
 
 		}
-		if(fMainMusicVolume >=0.1) {
-			fMainMusicVolume -= 0.1f;
-			BGMSource.volume = fMainMusicVolume;
-		}
+		lerpToVol = fHeartbeatVolume + 0.1f;
+		volLerp = true;
+
 		if(fHeartbeatVolume <= 1) {
-			fHeartbeatVolume += 0.02f;
-			HeartbeatSource.volume = fHeartbeatVolume;
+
+//			fHeartbeatVolume += 0.1f;
+//			HeartbeatSource.volume = fHeartbeatVolume;
 		}
 	}
 
@@ -62,4 +87,5 @@ public class AudioManager : MonoBehaviour {
 
 		}
 	}
+
 }

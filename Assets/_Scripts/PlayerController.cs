@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float moveForce = 365f;			// Amount of force added to move the player left and right.
 	public float maxSpeed = 5f;				// The fastest the player can travel in the x axis.
-	public AudioClip jumpClip;			// Array of clips for when the player jumps.
+//	public AudioClip jumpClip;			// Array of clips for when the player jumps.
 	public float jumpForce = 1000f;			// Amount of force added when the player jumps.
 
 	private Transform groundCheck;			// A position marking where to check if the player is grounded.
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour {
 //			anim.SetTrigger("Jump");
 			
 			// Play a random jump audio clip.
-			AudioSource.PlayClipAtPoint(jumpClip, transform.position, 0.4f);
+//			AudioSource.PlayClipAtPoint(jumpClip, transform.position, 0.4f);
 			
 			// Add a vertical force to the player.
 			rigidbody2D.AddForce(new Vector2(0f, jumpForce));

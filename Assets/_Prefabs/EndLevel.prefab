@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6316d26b9a7cd345a4331990e96659e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fPlaybackRate: 2
+  fPlaybackRate: 4
 --- !u!198 &19826046
 ParticleSystem:
   m_ObjectHideFlags: 1
