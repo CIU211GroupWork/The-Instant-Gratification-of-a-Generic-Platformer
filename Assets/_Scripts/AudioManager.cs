@@ -36,42 +36,20 @@ public class AudioManager : MonoBehaviour {
 				fHeartbeatVolume = lerpToVol;
 				volLerp = false;
 			}
-//			float lerpParam = 0.0f;
-//			float speed = 0.3f;
-//
-//			if(lerpParam < 1) {
-//				lerpParam += Time.deltaTime;
-//				HeartbeatSource.volume = Mathf.Lerp(fHeartbeatVolume, lerpToVol, lerpParam);
-//				Debug.Log("Lerprun");
-//			}
-//
-//			if(Mathf.Approximately(HeartbeatSource.volume, lerpToVol)) {
-//				fHeartbeatVolume = lerpToVol;
-//				HeartbeatSource.volume = fHeartbeatVolume;
-//				volLerp = false;
-//				Debug.Log("Approx");
-//			}
 		}
 	}
 
 	public void PlayNextClip() {
 		if(iClipTracker >= acPickupClips.Length) {
-			AudioSource.PlayClipAtPoint(acPickupClips[acPickupClips.Length-1], transform.position, fPickupVolume);
+            BGMSource.PlayOneShot(acPickupClips[acPickupClips.Length - 1], fPickupVolume);
 		}
 		else {
-			fPickupVolume *= 2.0f;
-			AudioSource.PlayClipAtPoint(acPickupClips[iClipTracker], transform.position, fPickupVolume);
+            fPickupVolume += 0.75f;
+            BGMSource.PlayOneShot(acPickupClips[iClipTracker], fPickupVolume);
 			iClipTracker++;
-
 		}
-		lerpToVol = fHeartbeatVolume + 0.1f;
+		lerpToVol = fHeartbeatVolume + 0.75f;
 		volLerp = true;
-
-		if(fHeartbeatVolume <= 1) {
-
-//			fHeartbeatVolume += 0.1f;
-//			HeartbeatSource.volume = fHeartbeatVolume;
-		}
 	}
 
 	public void PlayRandomClip() {

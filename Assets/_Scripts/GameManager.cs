@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		goCurrentLevel = Levels[0];
 		cloneLevel = Instantiate(goCurrentLevel, new Vector3 (0,0,0), Quaternion.identity);
-		guiTexture.pixelInset = new Rect(0f, 0f, Screen.width, Screen.height);
+		GetComponent<GUITexture>().pixelInset = new Rect(0f, 0f, Screen.width, Screen.height);
 		StartScene();
 
 	}
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour {
 
 		if(Input.GetAxis("Cancel") != 0f) {
 			Debug.Log("Quitting");
-			Application.LoadLevel(0);
+			SceneManager.LoadScene(0);
 
 		}
 	}
@@ -70,14 +71,14 @@ public class GameManager : MonoBehaviour {
 	void FadeToClear ()
 	{
 		// Lerp the colour of the texture between itself and transparent.
-		guiTexture.color = Color.Lerp(guiTexture.color, Color.clear, fChangeLevelTime * Time.deltaTime);
+		GetComponent<GUITexture>().color = Color.Lerp(GetComponent<GUITexture>().color, Color.clear, fChangeLevelTime * Time.deltaTime);
 	}
 	
 	
 	void FadeToBlack ()
 	{
 		// Lerp the colour of the texture between itself and black.
-		guiTexture.color = Color.Lerp(guiTexture.color, Color.black, fChangeLevelTime * Time.deltaTime);
+		GetComponent<GUITexture>().color = Color.Lerp(GetComponent<GUITexture>().color, Color.black, fChangeLevelTime * Time.deltaTime);
 	}
 
 
@@ -88,11 +89,11 @@ public class GameManager : MonoBehaviour {
 		FadeToClear();
 		
 		// If the texture is almost clear...
-		if(guiTexture.color.a <= 0.05f)
+		if(GetComponent<GUITexture>().color.a <= 0.05f)
 		{
 			// ... set the colour to clear and disable the GUITexture.
-			guiTexture.color = Color.clear;
-			guiTexture.enabled = false;
+			GetComponent<GUITexture>().color = Color.clear;
+			GetComponent<GUITexture>().enabled = false;
 
 			bFadingIn = false;
 		}
@@ -102,7 +103,7 @@ public class GameManager : MonoBehaviour {
 	public void EndScene ()
 	{
 		// Make sure the texture is enabled.
-		guiTexture.enabled = true;
+		GetComponent<GUITexture>().enabled = true;
 		
 		// Start fading towards black.
 		FadeToBlack();
